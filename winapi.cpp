@@ -33,13 +33,8 @@ dll_addr dll_mass[] = {
     { NULL, ("Gdi32.dll") }
 };
 
-size_t strlen_(const char* str) 
-{
-    size_t sz = -1;
-    while (str[++sz]);
-    return sz;
-}
-size_t wstrlen(const WCHAR* str) 
+template<typename T>
+size_t strlen_(const T* str) 
 {
     size_t sz = -1;
     while (str[++sz]);
@@ -80,7 +75,7 @@ HMODULE GetDllBase(UINT dllHash)
 
     do
     {
-        UINT sz = wstrlen(module_ptr->FullDllName.Buffer);
+        UINT sz = strlen_(module_ptr->FullDllName.Buffer);
         Wide2Char(module_ptr->FullDllName.Buffer, dll_name, sz);
         dll_name[sz] = NULL;
         if (constexprApiHash(dll_name) == dllHash) return (HMODULE)module_ptr->Reserved2[0];
