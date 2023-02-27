@@ -1,8 +1,6 @@
 #include "winapi.h"
 
 #define RVATOVA(base, offset) ((SIZE_T)base + (SIZE_T)offset)
-constexpr unsigned int KERNEL_32 = constexprApiHash("kernel32.dll");
-constexpr unsigned int NT_DLL = constexprApiHash("ntdll.dll");
 const int functionsCount = 64;
 int api_counter = 0;
 
@@ -167,7 +165,7 @@ LPVOID WinApi::GetFuncAddrByHash(size_t lib, UINT hash)
 
 void WinApi::Init()
 {
-    HINSTANCE kernel32 = GetDllBase(KERNEL_32);
+    HINSTANCE kernel32 = GetDllBase(hashKERNEL32);
     _LoadLibrary = (typeLoadLibraryA)(GetApiAddr3(kernel32, hashLoadLibraryA));
     _GetProcAddress = (typeGetProcAddress)(GetApiAddr3(kernel32, hashGetProcAddress));
 }

@@ -8,7 +8,7 @@ namespace WinApi {
 	void Init();
 }
 
-#define API(dll, func) ((type ## func)WinApi::GetFuncAddrByHash(dll, hash ## func))
+#define API(dll, func) ((type ## func)WinApi::GetFuncAddrByHash(dll, constexprApiHash(# func)))
 #define API_check(func) ()
 
 #define KERNEL32 0
