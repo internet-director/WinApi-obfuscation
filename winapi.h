@@ -1,14 +1,21 @@
-typedef unsigned int uint32_t;
+#include <Windows.h>
+#include <winnt.h>
+#include <winternl.h>
+#include <tlhelp32.h>
+#include <LMaccess.h>
+#include <LMalert.h>
+#include <lmcons.h>
+#include <LM.h>
 
+#include <type_traits>
 #include "winapi_hash.h"
-#include "winapi_type.h"
 
 namespace WinApi {
 	LPVOID GetFuncAddrByHash(size_t lib, UINT hash);
 	void Init();
 }
 
-#define API(dll, func) ((type ## func)WinApi::GetFuncAddrByHash(dll, constexprApiHash(# func)))
+#define API(dll, func) (reinterpret_cast<std::decay_t<decltype(func)>>(WinApi::GetFuncAddrByHash(dll, constexprApiHash(# func))))
 #define API_check(func) ()
 
 #define KERNEL32 0
